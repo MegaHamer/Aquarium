@@ -148,12 +148,22 @@ namespace Aquarium
             }
             if (pikeH != null)
             {
+                float eatRadius = 5;
                 pikeH.Run(bm, waterColor);
-            
+                if (pikeH.EatNearby(karpH, eatRadius) >= 0)
+                {
+                    DelKarp(pikeH.EatNearby(karpH, eatRadius));
+                }
                 Tpike nextP = pikeH.Next;
                 while (nextP != null)
                 {
                     nextP.Run(bm,waterColor);
+
+                    if (nextP.EatNearby(karpH, eatRadius) >= 0)
+                    {
+                        DelKarp(nextP.EatNearby(karpH, eatRadius));
+                    }
+
                     nextP = nextP.Next;
 
                 }
@@ -190,18 +200,17 @@ namespace Aquarium
             pikeT = pikeT.CreateNext();
             pikeT.RandPosition(r, bm);
             pikeT.ChangeDirection(r);
-
         }
         public void DelKarp(int order)
         {
             if (karpH == null || order < 0)
             {
-                MessageBox.Show("head is null");
+                //MessageBox.Show("head is null");
                 return;
             }
             if (order ==0)
             {
-                MessageBox.Show("delete first");
+                //MessageBox.Show("delete first");
                 karpH = karpH.Next;
                 karpCount--;
                 return;
@@ -221,7 +230,7 @@ namespace Aquarium
             }
             if (karpH.Next == null) //delete first
             {
-                MessageBox.Show("delete single first");
+                //MessageBox.Show("delete single first");
                 karpH = null;
                 karpT = null;
                 karpCount--;
@@ -229,7 +238,7 @@ namespace Aquarium
             }
             if (next.Next == null)  // delete last
             {
-                MessageBox.Show("delete last");
+                //MessageBox.Show("delete last");
                next = null;
                 karpT = post;
                 karpT.Next = null;
@@ -237,7 +246,7 @@ namespace Aquarium
                 return;
             }
             //delete in middle
-            MessageBox.Show("delete middle");
+            //MessageBox.Show("delete middle");
             post.Next = next.Next;
             next = null;
             karpCount--;
@@ -246,12 +255,12 @@ namespace Aquarium
         {
             if (pikeH == null || order < 0)
             {
-                MessageBox.Show("head is null");
+                //MessageBox.Show("head is null");
                 return;
             }
             if (order == 0)
             {
-                MessageBox.Show("delete first");
+                //MessageBox.Show("delete first");
                 pikeH = pikeH.Next;
                 CountPike--;
                 return;
@@ -271,7 +280,7 @@ namespace Aquarium
             }
             if (pikeH.Next == null) //delete first
             {
-                MessageBox.Show("delete single first");
+                //MessageBox.Show("delete single first");
                 pikeH = null;
                 pikeT = null;
                 CountPike--;
@@ -279,7 +288,7 @@ namespace Aquarium
             }
             if (next.Next == null)  // delete last
             {
-                MessageBox.Show("delete last");
+                //MessageBox.Show("delete last");
                 next = null;
                 pikeT = post;
                 pikeT.Next = null;
@@ -287,7 +296,7 @@ namespace Aquarium
                 return;
             }
             //delete in middle
-            MessageBox.Show("delete middle");
+            //MessageBox.Show("delete middle");
             post.Next = next.Next;
             next = null;
             CountPike--;
