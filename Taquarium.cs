@@ -12,8 +12,15 @@ namespace Aquarium
     internal class Taquarium
     {
         public Bitmap bm;
-        public Tkarp fish;
-        public Tpike pike;
+
+        public Tkarp karpH;
+        public Tkarp karpT;
+        public int karpCount=0;
+
+        public Tpike pikeH;
+        public Tpike pikeT;
+        public int CountPike=0;
+
         private Panel _panel;
         public Color waterColor = Color.Aqua;
         public Timer timer;
@@ -32,14 +39,19 @@ namespace Aquarium
         public void CreateFishs(int CountPike,int CountCarp)
         {
             Random r = new Random();
+            for (int i = 0; i < 0; i++)
+            {
+                AddPike(r);
+            }
+            /*
             if (CountPike > 0)
             {
-                pike = new Tpike( 10, 10);
-                pike.RandPosition(r, bm);
-                pike.ChangeDirection(r);
+                pikeH = new Tpike( 10, 10);
+                pikeH.RandPosition(r, bm);
+                pikeH.ChangeDirection(r);
                 if (CountPike > 1)
                 {
-                    Tpike next = pike.CreateNext();
+                    Tpike next = pikeH.CreateNext();
                     next.RandPosition(r, bm);
                     next.ChangeDirection(r);
                     for (int i = 2; i < CountPike; i++)
@@ -49,15 +61,20 @@ namespace Aquarium
                         next.ChangeDirection(r);
                     }
                 }
-            }
-            if (CountCarp > 0)
+            }*/
+            for (int i = 0; i < 0; i++)
             {
-                fish = new Tkarp(10, 10);
-                fish.RandPosition(r, bm);
-                fish.ChangeDirection(r);
+                AddKarp(r);
+            }
+            /*if (CountCarp > 0)
+            {
+                
+                karpH = new Tkarp(10, 10);
+                karpH.RandPosition(r, bm);
+                karpH.ChangeDirection(r);
                 if (CountCarp > 1)
                 {
-                    Tkarp next = fish.CreateNext();
+                    Tkarp next = karpH.CreateNext();
                     next.RandPosition(r, bm);
                     next.ChangeDirection(r);
                     for (int i = 2; i < CountPike; i++)
@@ -67,7 +84,7 @@ namespace Aquarium
                         next.ChangeDirection(r);
                     }
                 }
-            }
+            }*/
         }
         public void Init()
         {
@@ -86,22 +103,27 @@ namespace Aquarium
             br = new SolidBrush(Color.SandyBrown);
             gr.FillClosedCurve(br, new Point[] { new Point(0, bm.Height), new Point(0, bm.Height - 20), new Point(bm.Width, bm.Height - 10), new Point(bm.Width, bm.Height) });
             //fishs
-            fish.Draw(bm);  //karps
-            Tkarp nextK = fish.Next;
-            while (nextK != null)
+            if (karpH != null)
             {
-                nextK.Draw(bm);
-                nextK = nextK.Next;
+                karpH.Draw(bm);  //karps
+                Tkarp nextK = karpH.Next;
+                while (nextK != null)
+                {
+                    nextK.Draw(bm);
+                    nextK = nextK.Next;
 
+                }
             }
-            
-            pike.Draw(bm);  //pikes
-            Tpike nextP = pike.Next;
-            while (nextP != null)
+            if (pikeH != null)
             {
-                nextP.Draw(bm);
-                nextP = nextP.Next;
+                pikeH.Draw(bm);  //pikes
+                Tpike nextP = pikeH.Next;
+                while (nextP != null)
+                {
+                    nextP.Draw(bm);
+                    nextP = nextP.Next;
 
+                }
             }
 
             panel.CreateGraphics().DrawImage(bm, 0, 0);
@@ -113,27 +135,162 @@ namespace Aquarium
         }
         private void TickTamer(Object myObject, EventArgs myEventArgs)
         {
-            fish.Run(bm, waterColor);
-            Tkarp nextK = fish.Next;
-            while (nextK != null)
+            if (karpH != null)
             {
-                nextK.Run(bm, waterColor);
-                nextK = nextK.Next;
+                karpH.Run(bm, waterColor);
+                Tkarp nextK = karpH.Next;
+                while (nextK != null)
+                {
+                    nextK.Run(bm, waterColor);
+                    nextK = nextK.Next;
 
+                }
             }
-            pike.Run(bm, waterColor);
+            if (pikeH != null)
+            {
+                pikeH.Run(bm, waterColor);
             
-            Tpike nextP = pike.Next;
-            while (nextP != null)
-            {
-                nextP.Run(bm,waterColor);
-                nextP = nextP.Next;
+                Tpike nextP = pikeH.Next;
+                while (nextP != null)
+                {
+                    nextP.Run(bm,waterColor);
+                    nextP = nextP.Next;
 
+                }
             }
-            //MessageBox.Show(pike.Position.X + " " + pike.Position.Y);
-
 
             DrawAll();
+        }
+        public void AddKarp(Random r)
+        {
+            karpCount++;
+            if (karpH == null)
+            {
+                karpH = new Tkarp(10, 10);
+                karpH.RandPosition(r, bm);
+                karpH.ChangeDirection(r);
+                karpT = karpH;
+                return;
+            }
+            karpT = karpT.CreateNext();
+            karpT.RandPosition(r, bm);
+            karpT.ChangeDirection(r);
+        }
+        public void AddPike(Random r)
+        {
+            CountPike++;
+            if (pikeH == null)
+            {
+                pikeH = new Tpike(10, 10);
+                pikeH.RandPosition(r, bm);
+                pikeH.ChangeDirection(r);
+                pikeT = pikeH;
+                return;
+            }
+            pikeT = pikeT.CreateNext();
+            pikeT.RandPosition(r, bm);
+            pikeT.ChangeDirection(r);
+
+        }
+        public void DelKarp(int order)
+        {
+            if (karpH == null || order < 0)
+            {
+                MessageBox.Show("head is null");
+                return;
+            }
+            if (order ==0)
+            {
+                MessageBox.Show("delete first");
+                karpH = karpH.Next;
+                karpCount--;
+                return;
+            }
+            
+            Tkarp next = karpH.Next;  // 1
+            Tkarp post = karpH;
+            if (next == null) { return; }
+            for (int i =1; i < order; i++)
+            {
+                post = next;
+                next = next.Next;
+                if (next == null)  //array end
+                {
+                    return;
+                }
+            }
+            if (karpH.Next == null) //delete first
+            {
+                MessageBox.Show("delete single first");
+                karpH = null;
+                karpT = null;
+                karpCount--;
+                return;
+            }
+            if (next.Next == null)  // delete last
+            {
+                MessageBox.Show("delete last");
+               next = null;
+                karpT = post;
+                karpT.Next = null;
+                karpCount--;
+                return;
+            }
+            //delete in middle
+            MessageBox.Show("delete middle");
+            post.Next = next.Next;
+            next = null;
+            karpCount--;
+        }
+        public void DelPike(int order)
+        {
+            if (pikeH == null || order < 0)
+            {
+                MessageBox.Show("head is null");
+                return;
+            }
+            if (order == 0)
+            {
+                MessageBox.Show("delete first");
+                pikeH = pikeH.Next;
+                CountPike--;
+                return;
+            }
+
+            Tpike next = pikeH.Next;  // 1
+            Tpike post = pikeH;
+            if (next == null) { return; }
+            for (int i = 1; i < order; i++)
+            {
+                post = next;
+                next = next.Next;
+                if (next == null)  //array end
+                {
+                    return;
+                }
+            }
+            if (pikeH.Next == null) //delete first
+            {
+                MessageBox.Show("delete single first");
+                pikeH = null;
+                pikeT = null;
+                CountPike--;
+                return;
+            }
+            if (next.Next == null)  // delete last
+            {
+                MessageBox.Show("delete last");
+                next = null;
+                pikeT = post;
+                pikeT.Next = null;
+                CountPike--;
+                return;
+            }
+            //delete in middle
+            MessageBox.Show("delete middle");
+            post.Next = next.Next;
+            next = null;
+            CountPike--;
         }
     }
 }

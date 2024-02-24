@@ -35,7 +35,34 @@ namespace Aquarium
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(aqua.pike.Next.Next.Next.Color.Name);
+            if (rdbKarp.Checked)
+            {
+                aqua.AddKarp(new Random());
+                rdbKarp.Text = "Карп(" + aqua.karpCount + ")";
+            }
+            if (rdbPike.Checked)
+            {
+                aqua.AddPike(new Random());
+                rdbPike.Text = "Щука(" + aqua.CountPike + ")";
+            }
+        }
+
+        private void delBtn_Click(object sender, EventArgs e)
+        {
+            if (NUDOrder.Value < 0)
+            {
+                MessageBox.Show("Ошибка валидации, очередь не может быть отрицательной");
+            }
+            if (rdbKarp.Checked)
+            {
+                aqua.DelKarp((int) NUDOrder.Value);
+                rdbKarp.Text = "Карп(" + aqua.karpCount + ")";
+            }
+            if (rdbPike.Checked)
+            {
+                aqua.DelPike((int)NUDOrder.Value);
+                rdbPike.Text = "Щука(" + aqua.CountPike + ")";
+            }
         }
     }
 }
