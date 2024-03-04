@@ -173,17 +173,18 @@ namespace Aquarium
         }
         public void AddKarp(Random r)
         {
+            
             karpCount++;
             if (karpH == null)
             {
                 karpH = new Tkarp(10, 10);
-                karpH.RandPosition(r, bm);
+                karpH.RandPosition(r, bm, waterColor);
                 karpH.ChangeDirection(r);
                 karpT = karpH;
                 return;
             }
             karpT = karpT.CreateNext();
-            karpT.RandPosition(r, bm);
+            karpT.RandPosition(r, bm,waterColor);
             karpT.ChangeDirection(r);
         }
         public void AddPike(Random r)
@@ -192,13 +193,13 @@ namespace Aquarium
             if (pikeH == null)
             {
                 pikeH = new Tpike(10, 10);
-                pikeH.RandPosition(r, bm);
+                pikeH.RandPosition(r, bm,waterColor);
                 pikeH.ChangeDirection(r);
                 pikeT = pikeH;
                 return;
             }
             pikeT = pikeT.CreateNext();
-            pikeT.RandPosition(r, bm);
+            pikeT.RandPosition(r, bm,waterColor);
             pikeT.ChangeDirection(r);
         }
         public void DelKarp(int order)

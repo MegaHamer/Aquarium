@@ -129,9 +129,17 @@ namespace Aquarium
             float rx = (float)r.NextDouble() - 0.5f, ry = (float)r.NextDouble() - 0.5f;
             Direction = new PointF(rx, ry);
         }
-        public void RandPosition(Random r,Bitmap bm)
+        public void RandPosition(Random r,Bitmap bm, Color waterColor)
         {
-            Position = new PointF(r.Next(0, bm.Width - 1), r.Next(0, bm.Height - 1));
+            Color pColor; int nx, ny;
+            do
+            {
+                nx = r.Next(0, bm.Width - 1); ny = r.Next(0, bm.Height - 1);
+
+                pColor = bm.GetPixel(nx, ny);
+            }
+            while (pColor.ToArgb() != new SolidBrush(waterColor).Color.ToArgb() && pColor.ToArgb() != Color.ToArgb());
+            Position = new PointF(nx,ny);
         }
     }
 }
